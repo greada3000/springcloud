@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="getway-service" />
+        <module name="commonsuser" />
+        <module name="article-service" />
+        <module name="review-service" />
+        <module name="userconcern-service" />
+        <module name="user-service" />
+        <module name="circle-service" />
+        <module name="eureka-server" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="article-service" target="8" />
+      <module name="borrow-server" target="8" />
+      <module name="circle-service" target="8" />
+      <module name="commonsuser" target="8" />
+      <module name="commonuse" target="8" />
+      <module name="eureka-server" target="8" />
+      <module name="getway-service" target="8" />
+      <module name="InterestCircle-service" target="8" />
+      <module name="Retrieve-service" target="8" />
+      <module name="review-service" target="8" />
+      <module name="search" target="8" />
+      <module name="springstudy" target="1.8" />
+      <module name="suiyi" target="8" />
+      <module name="tweets-service" target="8" />
+      <module name="user-service" target="8" />
+      <module name="userconcern-service" target="8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="InterestCircle-service" options="-parameters" />
+      <module name="Retrieve-service" options="-parameters" />
+      <module name="article-service" options="-parameters" />
+      <module name="borrow-server" options="-parameters" />
+      <module name="circle-service" options="-parameters" />
+      <module name="commonsuser" options="-parameters" />
+      <module name="commonuse" options="-parameters" />
+      <module name="eureka-server" options="-parameters" />
+      <module name="getway-service" options="-parameters" />
+      <module name="review-service" options="-parameters" />
+      <module name="search" options="-parameters" />
+      <module name="springstudy" options="-parameters" />
+      <module name="suiyi" options="-parameters" />
+      <module name="tweets-service" options="-parameters" />
+      <module name="user-service" options="-parameters" />
+      <module name="userconcern-service" options="-parameters" />
+    </option>
+  </component>
+</project>

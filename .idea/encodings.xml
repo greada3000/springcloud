@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Retrieve-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/article-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/book-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/borrow-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/circle-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commonsuser/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eureka-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/getway-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/interestcircle-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/review-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/search/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/suiyi/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tweets-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/userconcern-service/src/main/java" charset="UTF-8" />
+  </component>
+</project>

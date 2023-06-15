@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/article-service/article-service.iml" filepath="$PROJECT_DIR$/article-service/article-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/circle-service/circle-service.iml" filepath="$PROJECT_DIR$/circle-service/circle-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/commonsuser/commonsuser.iml" filepath="$PROJECT_DIR$/commonsuser/commonsuser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/getway-service/getway-service.iml" filepath="$PROJECT_DIR$/getway-service/getway-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/review-service/review-service.iml" filepath="$PROJECT_DIR$/review-service/review-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springstudy.iml" filepath="$PROJECT_DIR$/springstudy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-service/user-service.iml" filepath="$PROJECT_DIR$/user-service/user-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/userconcern-service/userconcern-service.iml" filepath="$PROJECT_DIR$/userconcern-service/userconcern-service.iml" />
+    </modules>
+  </component>
+</project>
