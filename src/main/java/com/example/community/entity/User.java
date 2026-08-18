@@ -12,9 +12,14 @@ import lombok.Data;
 @TableName("tb_user")
 @Schema(description = "用户（对应 tb_user）")
 public class User {
-  @TableId @NotNull private Integer userId;
-  @NotBlank private String username;
-  @NotBlank @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) private String password;
-  private Boolean usertype;
-  private String userpic;
+    @TableId
+    @NotNull
+    private Integer userId;
+    @NotBlank
+    private String username;
+    @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+    private Boolean usertype;
+    private String userpic;
 }

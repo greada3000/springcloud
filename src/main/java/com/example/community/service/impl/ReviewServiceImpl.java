@@ -1,3 +1,52 @@
 package com.example.community.service.impl;
-import com.example.community.entity.Review;import com.example.community.mapper.ReviewMapper;import com.example.community.service.ReviewService;import lombok.RequiredArgsConstructor;import org.springframework.stereotype.Service;import org.springframework.transaction.annotation.Transactional;import java.util.List;
-@Service @RequiredArgsConstructor public class ReviewServiceImpl implements ReviewService {private final ReviewMapper mapper;public Review get(Integer id){Review v=mapper.selectById(id);if(v==null)throw new IllegalArgumentException("评论不存在");return v;}public List<Review> byArticle(String id){return mapper.selectList(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Review>().eq(Review::getArticleId,id).orderByAsc(Review::getReviewId));}@Transactional public Review create(Review v){mapper.insert(v);return get(v.getReviewId());}@Transactional public Review update(Integer id,Review input){Review v=get(id);if(input.getOwnerId()!=null)v.setOwnerId(input.getOwnerId());if(input.getArticleId()!=null)v.setArticleId(input.getArticleId());if(input.getContent()!=null)v.setContent(input.getContent());mapper.updateById(v);return get(id);}@Transactional public void delete(Integer id){if(mapper.deleteById(id)==0)throw new IllegalArgumentException("评论不存在");}@Transactional public long deleteByArticle(String id){return mapper.delete(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Review>().eq(Review::getArticleId,id));}}
+
+import com.example.community.entity.Review;
+import com.example.community.mapper.ReviewMapper;
+import com.example.community.service.ReviewService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class ReviewServiceImpl implements ReviewService {
+    private final ReviewMapper mapper;
+
+    public Review get(Integer id) {
+        Review v = mapper.selectById(id);
+        if (v == null) throw new IllegalArgumentException("评论不存在");
+        return v;
+    }
+
+    public List<Review> byArticle(String id) {
+        return mapper.selectList(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Review>().eq(Review::getArticleId, id).orderByAsc(Review::getReviewId));
+    }
+
+    @Transactional
+    public Review create(Review v) {
+        mapper.insert(v);
+        return get(v.getReviewId());
+    }
+
+    @Transactional
+    public Review update(Integer id, Review input) {
+        Review v = get(id);
+        if (input.getOwnerId() != null) v.setOwnerId(input.getOwnerId());
+        if (input.getArticleId() != null) v.setArticleId(input.getArticleId());
+        if (input.getContent() != null) v.setContent(input.getContent());
+        mapper.updateById(v);
+        return get(id);
+    }
+
+    @Transactional
+    public void delete(Integer id) {
+        if (mapper.deleteById(id) == 0) throw new IllegalArgumentException("评论不存在");
+    }
+
+    @Transactional
+    public long deleteByArticle(String id) {
+        return mapper.delete(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Review>().eq(Review::getArticleId, id));
+    }
+}

@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.community.mapper.CircleMapper"><resultMap id="CircleMap" type="Circle"><id column="circle_id" property="circleId"/><result column="owner" property="owner"/><result column="circle_name" property="circleName"/><result column="detail" property="detail"/></resultMap></mapper>
+<mapper namespace="com.example.community.mapper.CircleMapper">
+    <resultMap id="CircleMap" type="Circle">
+        <id column="circle_id" property="circleId"/>
+        <result column="owner" property="owner"/>
+        <result column="circle_name" property="circleName"/>
+        <result column="detail" property="detail"/>
+    </resultMap>
+</mapper>

@@ -12,8 +12,11 @@ import lombok.Data;
 @TableName("tb_circle")
 @Schema(description = "圈子（对应 tb_circle）")
 public class Circle {
-  @TableId(type = IdType.AUTO) private Integer circleId;
-  @NotNull private Integer owner;
-  @NotBlank private String circleName;
-  private String detail;
+    @TableId(type = IdType.AUTO)
+    private Integer circleId;
+    @NotNull
+    private Integer owner;
+    @NotBlank
+    private String circleName;
+    private String detail;
 }

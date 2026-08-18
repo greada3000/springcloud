@@ -12,10 +12,15 @@ import lombok.Data;
 @TableName("tb_article")
 @Schema(description = "文章（对应 tb_article）")
 public class Article {
-  @TableId(type = IdType.INPUT) private String articleId;
-  @NotBlank private String title;
-  @NotNull private Integer userId;
-  private String username;
-  @NotNull private Integer circleId;
-  @NotBlank private String content;
+    @TableId(type = IdType.INPUT)
+    private String articleId;
+    @NotBlank
+    private String title;
+    @NotNull
+    private Integer userId;
+    private String username;
+    @NotNull
+    private Integer circleId;
+    @NotBlank
+    private String content;
 }
