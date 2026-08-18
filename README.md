@@ -7,15 +7,16 @@
 - JDK 17 LTS
 - Maven 3.6.3+
 - MySQL 8
-- Elasticsearch（需安装 IK 分词插件，以兼容原 `article` 索引）
 
 ## 启动
 
 ```powershell
-$env:DB_PASSWORD = "your-password"
+& 'C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe' -uroot -p123456 -e "source database/init.sql"
 mvn spring-boot:run
 ```
 
 服务默认运行于 `http://localhost:8080`，Swagger UI 位于 `http://localhost:8080/swagger-ui.html`。
 
-可通过 `DB_URL`、`DB_USERNAME`、`DB_PASSWORD`、`ELASTICSEARCH_URIS`、`SERVER_PORT` 和 `CORS_ALLOWED_ORIGINS` 环境变量覆盖配置。
+默认数据库账号为 `root`，密码为 `123456`。可通过 `DB_URL`、`DB_USERNAME`、`DB_PASSWORD`、`SERVER_PORT` 和 `CORS_ALLOWED_ORIGINS` 环境变量覆盖配置。
+
+测试账号为 `10001`、`10002`、`10003`，密码均为 `123456`。

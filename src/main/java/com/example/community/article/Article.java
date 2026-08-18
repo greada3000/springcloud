@@ -1,13 +1,12 @@
 package com.example.community.article;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.*;
-@Data @NoArgsConstructor @AllArgsConstructor @Document(indexName="article")
+@Data @NoArgsConstructor @AllArgsConstructor @TableName("tb_article")
 public class Article {
-  @Id private String id;
-  @Field(type=FieldType.Text,analyzer="ik_max_word") private String title;
-  @Field(type=FieldType.Keyword) private Integer userid;
-  @Field(type=FieldType.Keyword) private String username;
-  @Field(type=FieldType.Keyword) private Integer circlename;
-  @Field(type=FieldType.Text,analyzer="ik_max_word") private String content;
+  @TableId("article_id") private String id;
+  private String title;
+  @TableField("user_id") private Integer userid;
+  private String username;
+  @TableField("circle_id") private Integer circlename;
+  private String content;
 }

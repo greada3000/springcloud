@@ -39,10 +39,11 @@
 - 统一 `ApiResponse` 响应和全局参数异常处理。
 - 加入 MyBatis-Plus 分页拦截器、Bean Validation 和 OpenAPI 文档。
 - 数据库凭据及外部服务地址改由环境变量注入。
+- 新增 `database/init.sql`，用于创建 MySQL 数据库、5 张业务表并写入可重复执行的测试数据。
 
 ## 兼容性提醒
 
 - API 路径已改变，前端需按上表更新请求地址。
 - 新注册用户密码使用 BCrypt；旧库中的 MD5 密码无法直接通过新登录校验，需执行一次密码重置或编写迁移流程。
-- 数据表名和字段名保持不变，文章 Elasticsearch 索引名仍为 `article`。
-- Elasticsearch 仍需提供 `ik_max_word` 分词器。
+- 用户、圈子、评论和关注关系表名保持不变；文章已从 Elasticsearch `article` 索引迁移为 MySQL `tb_article` 表。
+- 文章搜索改用 MySQL `LIKE` 查询，不再需要 Elasticsearch 或 IK 分词器。
