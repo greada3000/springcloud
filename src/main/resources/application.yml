@@ -9,6 +9,8 @@ spring:
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:123456}
 mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.example.community.entity
   configuration:
     map-underscore-to-camel-case: true
 springdoc:
