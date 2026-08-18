@@ -1,0 +1,20 @@
+server:
+  port: ${SERVER_PORT:8080}
+spring:
+  application:
+    name: community-api
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL:jdbc:mysql://localhost:3306/finally?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+  elasticsearch:
+    uris: ${ELASTICSEARCH_URIS:http://localhost:9200}
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+springdoc:
+  swagger-ui.path: /swagger-ui.html
+  api-docs.path: /api-docs
+app:
+  cors.allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:8081}
