@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.community.mapper.UserFollowMapper">
+    <resultMap id="FollowMap" type="UserFollow">
+        <id column="follow_id" property="followId"/>
+        <result column="follower_id" property="followerId"/>
+        <result column="followed_user_id" property="followedUserId"/>
+    </resultMap>
+
+    <sql id="columns">follow_id, follower_id, followed_user_id</sql>
+
+    <select id="selectByFollowedUserId" resultMap="FollowMap">
+        SELECT <include refid="columns"/> FROM tb_user_follow
+        WHERE followed_user_id = #{followedUserId}
+        ORDER BY follow_id ASC
+    </select>
+
+    <select id="selectByFollowerId" resultMap="FollowMap">
+        SELECT <include refid="columns"/> FROM tb_user_follow
+        WHERE follower_id = #{followerId}
+        ORDER BY follow_id ASC
+    </select>
+
+    <select id="countByUserIds" resultType="long">
+        SELECT COUNT(*) FROM tb_user_follow
+        WHERE follower_id = #{followerId} AND followed_user_id = #{followedUserId}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="followId">
+        INSERT INTO tb_user_follow (follower_id, followed_user_id)
+        VALUES (#{followerId}, #{followedUserId})
+    </insert>
+
+    <delete id="deleteByUserIds">
+        DELETE FROM tb_user_follow
+        WHERE follower_id = #{followerId} AND followed_user_id = #{followedUserId}
+    </delete>
+</mapper>

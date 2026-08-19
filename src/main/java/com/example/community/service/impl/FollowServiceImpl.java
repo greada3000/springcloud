@@ -1,8 +1,8 @@
 package com.example.community.service.impl;
 
-import com.example.community.entity.UserConcern;
-import com.example.community.mapper.UserConcernMapper;
-import com.example.community.service.ConcernService;
+import com.example.community.entity.UserFollow;
+import com.example.community.mapper.UserFollowMapper;
+import com.example.community.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,14 +11,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ConcernServiceImpl implements ConcernService {
-    private final UserConcernMapper mapper;
+public class FollowServiceImpl implements FollowService {
+    private final UserFollowMapper mapper;
 
-    public List<UserConcern> findFollowersByUserId(Integer userId) {
+    public List<UserFollow> findFollowersByUserId(Integer userId) {
         return mapper.selectByFollowedUserId(userId);
     }
 
-    public List<UserConcern> findFollowingByUserId(Integer userId) {
+    public List<UserFollow> findFollowingByUserId(Integer userId) {
         return mapper.selectByFollowerId(userId);
     }
 
@@ -27,11 +27,11 @@ public class ConcernServiceImpl implements ConcernService {
     }
 
     @Transactional
-    public UserConcern followUser(UserConcern concern) {
-        if (concern.getPreuser().equals(concern.getLastuser())) throw new IllegalArgumentException("不能关注自己");
-        if (isFollowing(concern.getPreuser(), concern.getLastuser())) throw new IllegalArgumentException("已经关注该用户");
-        mapper.insert(concern);
-        return concern;
+    public UserFollow followUser(UserFollow follow) {
+        if (follow.getFollowerId().equals(follow.getFollowedUserId())) throw new IllegalArgumentException("不能关注自己");
+        if (isFollowing(follow.getFollowerId(), follow.getFollowedUserId())) throw new IllegalArgumentException("已经关注该用户");
+        mapper.insert(follow);
+        return follow;
     }
 
     @Transactional

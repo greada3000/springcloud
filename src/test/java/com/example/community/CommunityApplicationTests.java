@@ -18,7 +18,7 @@ class CommunityApplicationTests {
     @Autowired
     ReviewService reviews;
     @Autowired
-    ConcernService concerns;
+    FollowService follows;
 
     @Test
     void everyBusinessModuleReadsMysqlData() {
@@ -30,7 +30,7 @@ class CommunityApplicationTests {
         assertThat(articles.getArticleById(articleId).getTitle()).contains("Spring Boot");
         assertThat(articles.searchArticles("Spring Boot", 1, 10).getTotal()).isPositive();
         assertThat(reviews.findReviewsByArticleId(articleId)).hasSizeGreaterThanOrEqualTo(2);
-        assertThat(concerns.findFollowersByUserId(10001)).hasSizeGreaterThanOrEqualTo(2);
-        assertThat(concerns.isFollowing(10002, 10001)).isTrue();
+        assertThat(follows.findFollowersByUserId(10001)).hasSizeGreaterThanOrEqualTo(2);
+        assertThat(follows.isFollowing(10002, 10001)).isTrue();
     }
 }

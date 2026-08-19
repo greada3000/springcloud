@@ -46,13 +46,13 @@ CREATE TABLE IF NOT EXISTS tb_review (
   KEY idx_review_owner (owner_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS tb_userconcern (
-  concern_id INT NOT NULL AUTO_INCREMENT,
-  preuser INT NOT NULL,
-  lastuser INT NOT NULL,
-  PRIMARY KEY (concern_id),
-  UNIQUE KEY uk_concern_relation (preuser, lastuser),
-  KEY idx_concern_followed (lastuser)
+CREATE TABLE IF NOT EXISTS tb_user_follow (
+  follow_id INT NOT NULL AUTO_INCREMENT,
+  follower_id INT NOT NULL,
+  followed_user_id INT NOT NULL,
+  PRIMARY KEY (follow_id),
+  UNIQUE KEY uk_follow_relation (follower_id, followed_user_id),
+  KEY idx_follow_followed_user (followed_user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 以下测试用户的登录密码均为 123456（BCrypt）。
@@ -80,8 +80,8 @@ INSERT INTO tb_review (review_id, owner_id, article_id, content) VALUES
   (10003, 10001, '00000000-0000-0000-0000-000000000002', '统一 API 后联调方便多了。')
 ON DUPLICATE KEY UPDATE owner_id=VALUES(owner_id), article_id=VALUES(article_id), content=VALUES(content);
 
-INSERT INTO tb_userconcern (concern_id, preuser, lastuser) VALUES
+INSERT INTO tb_user_follow (follow_id, follower_id, followed_user_id) VALUES
   (10001, 10002, 10001),
   (10002, 10003, 10001),
   (10003, 10001, 10002)
-ON DUPLICATE KEY UPDATE preuser=VALUES(preuser), lastuser=VALUES(lastuser);
+ON DUPLICATE KEY UPDATE follower_id=VALUES(follower_id), followed_user_id=VALUES(followed_user_id);

@@ -40,14 +40,14 @@
 | 评论 | PUT | `/api/reviews/{id}` | 修改评论 |
 | 评论 | DELETE | `/api/reviews/{id}` | 删除评论 |
 | 评论 | DELETE | `/api/reviews/article/{id}` | 删除文章全部评论 |
-| 关注 | GET | `/api/concerns/{id}/followers` | 粉丝列表 |
-| 关注 | GET | `/api/concerns/{id}/following` | 关注列表 |
-| 关注 | GET | `/api/concerns/status?preuser=10002&lastuser=10001` | 关注状态 |
-| 关注 | POST | `/api/concerns/status` | 兼容旧版状态入口 |
-| 关注 | POST | `/api/concerns` | 新建关注关系 |
-| 关注 | DELETE | `/api/concerns?preuser=...&lastuser=...` | 取消关注 |
+| 关注 | GET | `/api/follows/{userId}/followers` | 粉丝列表 |
+| 关注 | GET | `/api/follows/{userId}/following` | 关注列表 |
+| 关注 | GET | `/api/follows/status?followerId=10002&followedUserId=10001` | 关注状态 |
+| 关注 | POST | `/api/follows/status` | 兼容旧版状态入口 |
+| 关注 | POST | `/api/follows` | 新建关注关系 |
+| 关注 | DELETE | `/api/follows?followerId=...&followedUserId=...` | 取消关注 |
 
-`preuser` 表示关注者，`lastuser` 表示被关注者。Swagger 页面内包含请求模型，可直接执行验证。
+`followerId` 表示关注者，`followedUserId` 表示被关注者。Swagger 页面内包含请求模型，可直接执行验证。
 
 ## 数据库与测试数据
 
