@@ -11,7 +11,7 @@
 ## 启动
 
 ```powershell
-& 'C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe' -uroot -p123456 -e "source database/init.sql"
+& 'C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe' --default-character-set=utf8mb4 -uroot -p123456 -e "source database/init.sql"
 mvn spring-boot:run
 ```
 
@@ -20,3 +20,5 @@ mvn spring-boot:run
 可通过 `DB_URL`、`DB_USERNAME`、`DB_PASSWORD`、`SERVER_PORT` 和 `CORS_ALLOWED_ORIGINS` 环境变量覆盖配置。
 
 测试账号为 `10001`、`10002`、`10003`，密码均为 `123456`。
+
+完整的数据库结构、历史修改、Windows/Linux/macOS/Docker/IDEA 初始化示例，以及备份迁移方法见 [DATABASE_SETUP.md](DATABASE_SETUP.md)。
