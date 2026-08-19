@@ -8,4 +8,46 @@
         <result column="usertype" property="usertype"/>
         <result column="userpic" property="userpic"/>
     </resultMap>
+
+    <sql id="columns">user_id, username, password, usertype, userpic</sql>
+
+    <sql id="searchWhere">
+        <if test="keyword != null">
+            WHERE username LIKE CONCAT('%', #{keyword}, '%')
+            <if test="numericKeyword != null">
+                OR user_id = #{numericKeyword}
+            </if>
+        </if>
+    </sql>
+
+    <select id="selectById" resultMap="UserMap">
+        SELECT <include refid="columns"/> FROM tb_user WHERE user_id = #{id}
+    </select>
+
+    <select id="selectPageByKeyword" resultMap="UserMap">
+        SELECT <include refid="columns"/> FROM tb_user
+        <include refid="searchWhere"/>
+        ORDER BY user_id ASC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countByKeyword" resultType="long">
+        SELECT COUNT(*) FROM tb_user
+        <include refid="searchWhere"/>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_user (user_id, username, password, usertype, userpic)
+        VALUES (#{userId}, #{username}, #{password}, #{usertype}, #{userpic})
+    </insert>
+
+    <update id="updateById">
+        UPDATE tb_user
+        SET username = #{username}, password = #{password}, usertype = #{usertype}, userpic = #{userpic}
+        WHERE user_id = #{userId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM tb_user WHERE user_id = #{id}
+    </delete>
 </mapper>

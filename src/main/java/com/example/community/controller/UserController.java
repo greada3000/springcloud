@@ -18,51 +18,51 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Operation(summary = "查询用户详情")
-    public ApiResponse<User> get(@PathVariable Integer id) {
-        return ApiResponse.ok(service.get(id));
+    public ApiResponse<User> getUserById(@PathVariable Integer id) {
+        return ApiResponse.ok(service.getUserById(id));
     }
 
     @GetMapping
     @Operation(summary = "分页搜索用户")
-    public ApiResponse<?> search(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") long page, @RequestParam(defaultValue = "10") long size) {
-        return ApiResponse.ok(service.search(keyword, page, size));
+    public ApiResponse<?> searchUsers(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") long page, @RequestParam(defaultValue = "10") long size) {
+        return ApiResponse.ok(service.searchUsers(keyword, page, size));
     }
 
     @PostMapping("/search")
     @Operation(summary = "兼容旧版：分页搜索用户")
-    public ApiResponse<?> searchPost(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") long page, @RequestParam(defaultValue = "10") long size) {
-        return search(keyword, page, size);
+    public ApiResponse<?> searchUsersByPost(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") long page, @RequestParam(defaultValue = "10") long size) {
+        return searchUsers(keyword, page, size);
     }
 
     @PostMapping("/login")
     @Operation(summary = "用户登录")
-    public ApiResponse<User> login(@Valid @RequestBody LoginRequest r) {
-        return ApiResponse.ok(service.login(r.userId(), r.password()));
+    public ApiResponse<User> authenticateUser(@Valid @RequestBody LoginRequest request) {
+        return ApiResponse.ok(service.authenticateUser(request.userId(), request.password()));
     }
 
     @PostMapping
     @Operation(summary = "注册用户")
-    public ApiResponse<User> create(@Valid @RequestBody User v) {
-        return ApiResponse.ok(service.create(v));
+    public ApiResponse<User> createUser(@Valid @RequestBody User user) {
+        return ApiResponse.ok(service.createUser(user));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "修改用户资料")
-    public ApiResponse<User> update(@PathVariable Integer id, @RequestBody User v) {
-        return ApiResponse.ok(service.update(id, v));
+    public ApiResponse<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
+        return ApiResponse.ok(service.updateUser(id, user));
     }
 
     @PutMapping("/{id}/password")
     @Operation(summary = "修改密码")
-    public ApiResponse<Void> password(@PathVariable Integer id, @Valid @RequestBody PasswordRequest r) {
-        service.changePassword(id, r.oldPassword(), r.newPassword());
+    public ApiResponse<Void> changePassword(@PathVariable Integer id, @Valid @RequestBody PasswordRequest request) {
+        service.changePassword(id, request.oldPassword(), request.newPassword());
         return ApiResponse.ok("密码修改成功");
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除用户")
-    public ApiResponse<Void> delete(@PathVariable Integer id) {
-        service.delete(id);
+    public ApiResponse<Void> deleteUser(@PathVariable Integer id) {
+        service.deleteUser(id);
         return ApiResponse.ok("用户删除成功");
     }
 }

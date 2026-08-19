@@ -19,44 +19,44 @@ public class ArticleController {
 
     @GetMapping
     @Operation(summary = "分页搜索文章")
-    public ApiResponse<?> search(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") long page, @RequestParam(defaultValue = "10") long size) {
-        return ApiResponse.ok(service.search(keyword, page, size));
+    public ApiResponse<?> searchArticles(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") long page, @RequestParam(defaultValue = "10") long size) {
+        return ApiResponse.ok(service.searchArticles(keyword, page, size));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "查询文章详情")
-    public ApiResponse<Article> get(@PathVariable String id) {
-        return ApiResponse.ok(service.get(id));
+    public ApiResponse<Article> getArticleById(@PathVariable String id) {
+        return ApiResponse.ok(service.getArticleById(id));
     }
 
     @GetMapping("/user/{id}")
     @Operation(summary = "查询用户文章")
-    public ApiResponse<?> user(@PathVariable Integer id) {
-        return ApiResponse.ok(service.byUser(id));
+    public ApiResponse<?> getArticlesByUserId(@PathVariable Integer id) {
+        return ApiResponse.ok(service.findArticlesByUserId(id));
     }
 
     @GetMapping("/circle/{id}")
     @Operation(summary = "查询圈子文章")
-    public ApiResponse<?> circle(@PathVariable Integer id) {
-        return ApiResponse.ok(service.byCircle(id));
+    public ApiResponse<?> getArticlesByCircleId(@PathVariable Integer id) {
+        return ApiResponse.ok(service.findArticlesByCircleId(id));
     }
 
     @PostMapping
     @Operation(summary = "发布文章")
-    public ApiResponse<Article> create(@Valid @RequestBody Article v) {
-        return ApiResponse.ok(service.create(v));
+    public ApiResponse<Article> createArticle(@Valid @RequestBody Article article) {
+        return ApiResponse.ok(service.createArticle(article));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "修改文章")
-    public ApiResponse<Article> update(@PathVariable String id, @RequestBody Article v) {
-        return ApiResponse.ok(service.update(id, v));
+    public ApiResponse<Article> updateArticle(@PathVariable String id, @RequestBody Article article) {
+        return ApiResponse.ok(service.updateArticle(id, article));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除文章及其评论")
-    public ApiResponse<Void> delete(@PathVariable String id) {
-        service.delete(id);
+    public ApiResponse<Void> deleteArticle(@PathVariable String id) {
+        service.deleteArticle(id);
         return ApiResponse.ok("文章删除成功");
     }
 }

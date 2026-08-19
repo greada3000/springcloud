@@ -22,15 +22,15 @@ class CommunityApplicationTests {
 
     @Test
     void everyBusinessModuleReadsMysqlData() {
-        assertThat(users.login(10001, "123456").getUsername()).isEqualTo("测试管理员");
-        assertThat(users.search("小", 1, 10).getTotal()).isGreaterThanOrEqualTo(2);
-        assertThat(circles.get(1001).getCircleName()).contains("Java");
-        assertThat(circles.search("技术", 1, 10).getTotal()).isPositive();
+        assertThat(users.authenticateUser(10001, "123456").getUsername()).isEqualTo("测试管理员");
+        assertThat(users.searchUsers("小", 1, 10).getTotal()).isGreaterThanOrEqualTo(2);
+        assertThat(circles.getCircleById(1001).getCircleName()).contains("Java");
+        assertThat(circles.searchCircles("技术", 1, 10).getTotal()).isPositive();
         String articleId = "00000000-0000-0000-0000-000000000001";
-        assertThat(articles.get(articleId).getTitle()).contains("Spring Boot");
-        assertThat(articles.search("Spring Boot", 1, 10).getTotal()).isPositive();
-        assertThat(reviews.byArticle(articleId)).hasSizeGreaterThanOrEqualTo(2);
-        assertThat(concerns.followers(10001)).hasSizeGreaterThanOrEqualTo(2);
-        assertThat(concerns.status(10002, 10001)).isTrue();
+        assertThat(articles.getArticleById(articleId).getTitle()).contains("Spring Boot");
+        assertThat(articles.searchArticles("Spring Boot", 1, 10).getTotal()).isPositive();
+        assertThat(reviews.findReviewsByArticleId(articleId)).hasSizeGreaterThanOrEqualTo(2);
+        assertThat(concerns.findFollowersByUserId(10001)).hasSizeGreaterThanOrEqualTo(2);
+        assertThat(concerns.isFollowing(10002, 10001)).isTrue();
     }
 }

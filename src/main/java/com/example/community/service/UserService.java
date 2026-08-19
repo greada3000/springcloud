@@ -1,20 +1,20 @@
 package com.example.community.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.community.entity.User;
+import com.example.community.utils.PageResult;
 
 public interface UserService {
-    User get(Integer id);
+    User getUserById(Integer userId);
 
-    IPage<User> search(String keyword, long page, long size);
+    PageResult<User> searchUsers(String keyword, long page, long size);
 
-    User login(Integer id, String password);
+    User authenticateUser(Integer userId, String password);
 
-    User create(User user);
+    User createUser(User user);
 
-    User update(Integer id, User input);
+    User updateUser(Integer userId, User input);
 
-    void changePassword(Integer id, String oldValue, String newValue);
+    void changePassword(Integer userId, String oldPassword, String newPassword);
 
-    void delete(Integer id);
+    void deleteUser(Integer userId);
 }

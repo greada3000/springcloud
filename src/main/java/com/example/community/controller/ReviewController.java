@@ -18,39 +18,39 @@ public class ReviewController {
 
     @GetMapping("/{id}")
     @Operation(summary = "查询评论详情")
-    public ApiResponse<Review> get(@PathVariable Integer id) {
-        return ApiResponse.ok(service.get(id));
+    public ApiResponse<Review> getReviewById(@PathVariable Integer id) {
+        return ApiResponse.ok(service.getReviewById(id));
     }
 
     @GetMapping("/article/{id}")
     @Operation(summary = "查询文章评论")
-    public ApiResponse<?> article(@PathVariable String id) {
-        return ApiResponse.ok(service.byArticle(id));
+    public ApiResponse<?> getReviewsByArticleId(@PathVariable String id) {
+        return ApiResponse.ok(service.findReviewsByArticleId(id));
     }
 
     @PostMapping
     @Operation(summary = "发表评论")
-    public ApiResponse<Review> create(@Valid @RequestBody Review v) {
-        return ApiResponse.ok(service.create(v));
+    public ApiResponse<Review> createReview(@Valid @RequestBody Review review) {
+        return ApiResponse.ok(service.createReview(review));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "修改评论")
-    public ApiResponse<Review> update(@PathVariable Integer id, @RequestBody Review v) {
-        return ApiResponse.ok(service.update(id, v));
+    public ApiResponse<Review> updateReview(@PathVariable Integer id, @RequestBody Review review) {
+        return ApiResponse.ok(service.updateReview(id, review));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除评论")
-    public ApiResponse<Void> delete(@PathVariable Integer id) {
-        service.delete(id);
+    public ApiResponse<Void> deleteReview(@PathVariable Integer id) {
+        service.deleteReview(id);
         return ApiResponse.ok("评论删除成功");
     }
 
     @DeleteMapping("/article/{id}")
     @Operation(summary = "删除文章全部评论")
-    public ApiResponse<Void> deleteArticle(@PathVariable String id) {
-        service.deleteByArticle(id);
+    public ApiResponse<Void> deleteReviewsByArticleId(@PathVariable String id) {
+        service.deleteReviewsByArticleId(id);
         return ApiResponse.ok("文章评论删除成功");
     }
 }

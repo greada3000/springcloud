@@ -7,4 +7,48 @@
         <result column="circle_name" property="circleName"/>
         <result column="detail" property="detail"/>
     </resultMap>
+
+    <sql id="columns">circle_id, owner, circle_name, detail</sql>
+
+    <sql id="searchWhere">
+        <if test="keyword != null">
+            WHERE circle_name LIKE CONCAT('%', #{keyword}, '%')
+               OR detail LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    </sql>
+
+    <select id="selectById" resultMap="CircleMap">
+        SELECT <include refid="columns"/> FROM tb_circle WHERE circle_id = #{id}
+    </select>
+
+    <select id="selectByOwnerId" resultMap="CircleMap">
+        SELECT <include refid="columns"/> FROM tb_circle WHERE owner = #{ownerId} ORDER BY circle_id ASC
+    </select>
+
+    <select id="selectPageByKeyword" resultMap="CircleMap">
+        SELECT <include refid="columns"/> FROM tb_circle
+        <include refid="searchWhere"/>
+        ORDER BY circle_id ASC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countByKeyword" resultType="long">
+        SELECT COUNT(*) FROM tb_circle
+        <include refid="searchWhere"/>
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="circleId">
+        INSERT INTO tb_circle (owner, circle_name, detail)
+        VALUES (#{owner}, #{circleName}, #{detail})
+    </insert>
+
+    <update id="updateById">
+        UPDATE tb_circle
+        SET owner = #{owner}, circle_name = #{circleName}, detail = #{detail}
+        WHERE circle_id = #{circleId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM tb_circle WHERE circle_id = #{id}
+    </delete>
 </mapper>

@@ -14,32 +14,28 @@ import java.util.List;
 public class ConcernServiceImpl implements ConcernService {
     private final UserConcernMapper mapper;
 
-    public List<UserConcern> followers(Integer id) {
-        return mapper.selectList(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<UserConcern>().eq(UserConcern::getLastuser, id));
+    public List<UserConcern> findFollowersByUserId(Integer userId) {
+        return mapper.selectByFollowedUserId(userId);
     }
 
-    public List<UserConcern> following(Integer id) {
-        return mapper.selectList(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<UserConcern>().eq(UserConcern::getPreuser, id));
+    public List<UserConcern> findFollowingByUserId(Integer userId) {
+        return mapper.selectByFollowerId(userId);
     }
 
-    public boolean status(Integer pre, Integer last) {
-        return mapper.selectCount(query(pre, last)) > 0;
-    }
-
-    @Transactional
-    public UserConcern follow(UserConcern v) {
-        if (v.getPreuser().equals(v.getLastuser())) throw new IllegalArgumentException("不能关注自己");
-        if (status(v.getPreuser(), v.getLastuser())) throw new IllegalArgumentException("已经关注该用户");
-        mapper.insert(v);
-        return v;
+    public boolean isFollowing(Integer followerId, Integer followedUserId) {
+        return mapper.countByUserIds(followerId, followedUserId) > 0;
     }
 
     @Transactional
-    public void unfollow(Integer pre, Integer last) {
-        if (mapper.delete(query(pre, last)) == 0) throw new IllegalArgumentException("关注关系不存在");
+    public UserConcern followUser(UserConcern concern) {
+        if (concern.getPreuser().equals(concern.getLastuser())) throw new IllegalArgumentException("不能关注自己");
+        if (isFollowing(concern.getPreuser(), concern.getLastuser())) throw new IllegalArgumentException("已经关注该用户");
+        mapper.insert(concern);
+        return concern;
     }
 
-    private com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<UserConcern> query(Integer pre, Integer last) {
-        return new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<UserConcern>().eq(UserConcern::getPreuser, pre).eq(UserConcern::getLastuser, last);
+    @Transactional
+    public void unfollowUser(Integer followerId, Integer followedUserId) {
+        if (mapper.deleteByUserIds(followerId, followedUserId) == 0) throw new IllegalArgumentException("关注关系不存在");
     }
 }

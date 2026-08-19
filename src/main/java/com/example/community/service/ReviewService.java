@@ -5,15 +5,15 @@ import com.example.community.entity.Review;
 import java.util.List;
 
 public interface ReviewService {
-    Review get(Integer id);
+    Review getReviewById(Integer reviewId);
 
-    List<Review> byArticle(String id);
+    List<Review> findReviewsByArticleId(String articleId);
 
-    Review create(Review value);
+    Review createReview(Review review);
 
-    Review update(Integer id, Review input);
+    Review updateReview(Integer reviewId, Review input);
 
-    void delete(Integer id);
+    void deleteReview(Integer reviewId);
 
-    long deleteByArticle(String id);
+    long deleteReviewsByArticleId(String articleId);
 }

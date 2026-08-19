@@ -18,38 +18,41 @@ public class ConcernController {
 
     @GetMapping("/{id}/followers")
     @Operation(summary = "查询粉丝")
-    public ApiResponse<?> followers(@PathVariable Integer id) {
-        return ApiResponse.ok(service.followers(id));
+    public ApiResponse<?> getFollowersByUserId(@PathVariable Integer id) {
+        return ApiResponse.ok(service.findFollowersByUserId(id));
     }
 
     @GetMapping("/{id}/following")
     @Operation(summary = "查询关注列表")
-    public ApiResponse<?> following(@PathVariable Integer id) {
-        return ApiResponse.ok(service.following(id));
+    public ApiResponse<?> getFollowingByUserId(@PathVariable Integer id) {
+        return ApiResponse.ok(service.findFollowingByUserId(id));
     }
 
     @GetMapping("/status")
     @Operation(summary = "查询是否已关注")
-    public ApiResponse<Boolean> status(@RequestParam Integer preuser, @RequestParam Integer lastuser) {
-        return ApiResponse.ok(service.status(preuser, lastuser));
+    public ApiResponse<Boolean> getFollowingStatus(@RequestParam("preuser") Integer followerId,
+                                                   @RequestParam("lastuser") Integer followedUserId) {
+        return ApiResponse.ok(service.isFollowing(followerId, followedUserId));
     }
 
     @PostMapping("/status")
     @Operation(summary = "兼容旧版：查询是否已关注")
-    public ApiResponse<Boolean> statusPost(@RequestParam Integer preuser, @RequestParam Integer lastuser) {
-        return status(preuser, lastuser);
+    public ApiResponse<Boolean> getFollowingStatusByPost(@RequestParam("preuser") Integer followerId,
+                                                         @RequestParam("lastuser") Integer followedUserId) {
+        return getFollowingStatus(followerId, followedUserId);
     }
 
     @PostMapping
     @Operation(summary = "关注用户")
-    public ApiResponse<UserConcern> follow(@Valid @RequestBody UserConcern v) {
-        return ApiResponse.ok(service.follow(v));
+    public ApiResponse<UserConcern> followUser(@Valid @RequestBody UserConcern concern) {
+        return ApiResponse.ok(service.followUser(concern));
     }
 
     @DeleteMapping
     @Operation(summary = "取消关注")
-    public ApiResponse<Void> unfollow(@RequestParam Integer preuser, @RequestParam Integer lastuser) {
-        service.unfollow(preuser, lastuser);
+    public ApiResponse<Void> unfollowUser(@RequestParam("preuser") Integer followerId,
+                                          @RequestParam("lastuser") Integer followedUserId) {
+        service.unfollowUser(followerId, followedUserId);
         return ApiResponse.ok("取消关注成功");
     }
 }

@@ -1,10 +1,9 @@
 package com.example.community.service.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.community.entity.Circle;
 import com.example.community.mapper.CircleMapper;
 import com.example.community.service.CircleService;
+import com.example.community.utils.PageResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,41 +15,42 @@ import java.util.List;
 public class CircleServiceImpl implements CircleService {
     private final CircleMapper mapper;
 
-    public Circle get(Integer id) {
-        Circle v = mapper.selectById(id);
-        if (v == null) throw new IllegalArgumentException("圈子不存在");
-        return v;
+    public Circle getCircleById(Integer circleId) {
+        Circle circle = mapper.selectById(circleId);
+        if (circle == null) throw new IllegalArgumentException("圈子不存在");
+        return circle;
     }
 
-    public List<Circle> byOwner(Integer owner) {
-        return mapper.selectList(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Circle>().eq(Circle::getOwner, owner));
+    public List<Circle> findCirclesByOwnerId(Integer ownerId) {
+        return mapper.selectByOwnerId(ownerId);
     }
 
-    public IPage<Circle> search(String keyword, long page, long size) {
-        var q = new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Circle>();
-        if (keyword != null && !keyword.isBlank())
-            q.like(Circle::getCircleName, keyword).or().like(Circle::getDetail, keyword);
-        return mapper.selectPage(new Page<>(page, size), q.orderByAsc(Circle::getCircleId));
-    }
-
-    @Transactional
-    public Circle create(Circle v) {
-        mapper.insert(v);
-        return get(v.getCircleId());
+    public PageResult<Circle> searchCircles(String keyword, long page, long size) {
+        long current = Math.max(1, page);
+        long pageSize = Math.max(1, size);
+        String searchKeyword = keyword == null || keyword.isBlank() ? null : keyword.trim();
+        return new PageResult<>(mapper.selectPageByKeyword(searchKeyword, (current - 1) * pageSize, pageSize),
+                mapper.countByKeyword(searchKeyword), current, pageSize);
     }
 
     @Transactional
-    public Circle update(Integer id, Circle input) {
-        Circle v = get(id);
-        if (input.getOwner() != null) v.setOwner(input.getOwner());
-        if (input.getCircleName() != null) v.setCircleName(input.getCircleName());
-        if (input.getDetail() != null) v.setDetail(input.getDetail());
-        mapper.updateById(v);
-        return get(id);
+    public Circle createCircle(Circle circle) {
+        mapper.insert(circle);
+        return getCircleById(circle.getCircleId());
     }
 
     @Transactional
-    public void delete(Integer id) {
-        if (mapper.deleteById(id) == 0) throw new IllegalArgumentException("圈子不存在");
+    public Circle updateCircle(Integer circleId, Circle input) {
+        Circle circle = getCircleById(circleId);
+        if (input.getOwner() != null) circle.setOwner(input.getOwner());
+        if (input.getCircleName() != null) circle.setCircleName(input.getCircleName());
+        if (input.getDetail() != null) circle.setDetail(input.getDetail());
+        mapper.updateById(circle);
+        return getCircleById(circleId);
+    }
+
+    @Transactional
+    public void deleteCircle(Integer circleId) {
+        if (mapper.deleteById(circleId) == 0) throw new IllegalArgumentException("圈子不存在");
     }
 }

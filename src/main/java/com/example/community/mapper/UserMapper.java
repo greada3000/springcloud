@@ -1,7 +1,22 @@
 package com.example.community.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.community.entity.User;
+import org.apache.ibatis.annotations.Param;
 
-public interface UserMapper extends BaseMapper<User> {
+import java.util.List;
+
+public interface UserMapper {
+    User selectById(@Param("id") Integer id);
+
+    List<User> selectPageByKeyword(@Param("keyword") String keyword,
+                                   @Param("numericKeyword") Integer numericKeyword,
+                                   @Param("offset") long offset, @Param("size") long size);
+
+    long countByKeyword(@Param("keyword") String keyword, @Param("numericKeyword") Integer numericKeyword);
+
+    int insert(User user);
+
+    int updateById(User user);
+
+    int deleteById(@Param("id") Integer id);
 }

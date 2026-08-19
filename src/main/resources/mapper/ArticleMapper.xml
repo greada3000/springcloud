@@ -9,4 +9,54 @@
         <result column="circle_id" property="circleId"/>
         <result column="content" property="content"/>
     </resultMap>
+
+    <sql id="columns">article_id, title, user_id, username, circle_id, content</sql>
+
+    <sql id="searchWhere">
+        <if test="keyword != null">
+            WHERE title LIKE CONCAT('%', #{keyword}, '%')
+               OR content LIKE CONCAT('%', #{keyword}, '%')
+               OR username LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    </sql>
+
+    <select id="selectById" resultMap="ArticleMap">
+        SELECT <include refid="columns"/> FROM tb_article WHERE article_id = #{id}
+    </select>
+
+    <select id="selectPageByKeyword" resultMap="ArticleMap">
+        SELECT <include refid="columns"/> FROM tb_article
+        <include refid="searchWhere"/>
+        ORDER BY article_id DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countByKeyword" resultType="long">
+        SELECT COUNT(*) FROM tb_article
+        <include refid="searchWhere"/>
+    </select>
+
+    <select id="selectByUserId" resultMap="ArticleMap">
+        SELECT <include refid="columns"/> FROM tb_article WHERE user_id = #{userId}
+    </select>
+
+    <select id="selectByCircleId" resultMap="ArticleMap">
+        SELECT <include refid="columns"/> FROM tb_article WHERE circle_id = #{circleId}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_article (article_id, title, user_id, username, circle_id, content)
+        VALUES (#{articleId}, #{title}, #{userId}, #{username}, #{circleId}, #{content})
+    </insert>
+
+    <update id="updateById">
+        UPDATE tb_article
+        SET title = #{title}, user_id = #{userId}, username = #{username},
+            circle_id = #{circleId}, content = #{content}
+        WHERE article_id = #{articleId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM tb_article WHERE article_id = #{id}
+    </delete>
 </mapper>

@@ -14,39 +14,39 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewMapper mapper;
 
-    public Review get(Integer id) {
-        Review v = mapper.selectById(id);
-        if (v == null) throw new IllegalArgumentException("评论不存在");
-        return v;
+    public Review getReviewById(Integer reviewId) {
+        Review review = mapper.selectById(reviewId);
+        if (review == null) throw new IllegalArgumentException("评论不存在");
+        return review;
     }
 
-    public List<Review> byArticle(String id) {
-        return mapper.selectList(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Review>().eq(Review::getArticleId, id).orderByAsc(Review::getReviewId));
-    }
-
-    @Transactional
-    public Review create(Review v) {
-        mapper.insert(v);
-        return get(v.getReviewId());
+    public List<Review> findReviewsByArticleId(String articleId) {
+        return mapper.selectByArticleId(articleId);
     }
 
     @Transactional
-    public Review update(Integer id, Review input) {
-        Review v = get(id);
-        if (input.getOwnerId() != null) v.setOwnerId(input.getOwnerId());
-        if (input.getArticleId() != null) v.setArticleId(input.getArticleId());
-        if (input.getContent() != null) v.setContent(input.getContent());
-        mapper.updateById(v);
-        return get(id);
+    public Review createReview(Review review) {
+        mapper.insert(review);
+        return getReviewById(review.getReviewId());
     }
 
     @Transactional
-    public void delete(Integer id) {
-        if (mapper.deleteById(id) == 0) throw new IllegalArgumentException("评论不存在");
+    public Review updateReview(Integer reviewId, Review input) {
+        Review review = getReviewById(reviewId);
+        if (input.getOwnerId() != null) review.setOwnerId(input.getOwnerId());
+        if (input.getArticleId() != null) review.setArticleId(input.getArticleId());
+        if (input.getContent() != null) review.setContent(input.getContent());
+        mapper.updateById(review);
+        return getReviewById(reviewId);
     }
 
     @Transactional
-    public long deleteByArticle(String id) {
-        return mapper.delete(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Review>().eq(Review::getArticleId, id));
+    public void deleteReview(Integer reviewId) {
+        if (mapper.deleteById(reviewId) == 0) throw new IllegalArgumentException("评论不存在");
+    }
+
+    @Transactional
+    public long deleteReviewsByArticleId(String articleId) {
+        return mapper.deleteByArticleId(articleId);
     }
 }

@@ -5,13 +5,13 @@ import com.example.community.entity.UserConcern;
 import java.util.List;
 
 public interface ConcernService {
-    List<UserConcern> followers(Integer id);
+    List<UserConcern> findFollowersByUserId(Integer userId);
 
-    List<UserConcern> following(Integer id);
+    List<UserConcern> findFollowingByUserId(Integer userId);
 
-    boolean status(Integer pre, Integer last);
+    boolean isFollowing(Integer followerId, Integer followedUserId);
 
-    UserConcern follow(UserConcern value);
+    UserConcern followUser(UserConcern concern);
 
-    void unfollow(Integer pre, Integer last);
+    void unfollowUser(Integer followerId, Integer followedUserId);
 }

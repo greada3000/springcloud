@@ -1,22 +1,22 @@
 package com.example.community.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.community.entity.Article;
+import com.example.community.utils.PageResult;
 
 import java.util.List;
 
 public interface ArticleService {
-    Article get(String id);
+    Article getArticleById(String articleId);
 
-    IPage<Article> search(String keyword, long page, long size);
+    PageResult<Article> searchArticles(String keyword, long page, long size);
 
-    List<Article> byUser(Integer id);
+    List<Article> findArticlesByUserId(Integer userId);
 
-    List<Article> byCircle(Integer id);
+    List<Article> findArticlesByCircleId(Integer circleId);
 
-    Article create(Article value);
+    Article createArticle(Article article);
 
-    Article update(String id, Article input);
+    Article updateArticle(String articleId, Article input);
 
-    void delete(String id);
+    void deleteArticle(String articleId);
 }

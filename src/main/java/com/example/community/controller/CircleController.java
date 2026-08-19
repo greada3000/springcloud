@@ -18,44 +18,44 @@ public class CircleController {
 
     @GetMapping("/{id}")
     @Operation(summary = "查询圈子详情")
-    public ApiResponse<Circle> get(@PathVariable Integer id) {
-        return ApiResponse.ok(service.get(id));
+    public ApiResponse<Circle> getCircleById(@PathVariable Integer id) {
+        return ApiResponse.ok(service.getCircleById(id));
     }
 
     @GetMapping("/owner/{id}")
     @Operation(summary = "查询用户创建的圈子")
-    public ApiResponse<?> owner(@PathVariable Integer id) {
-        return ApiResponse.ok(service.byOwner(id));
+    public ApiResponse<?> getCirclesByOwnerId(@PathVariable Integer id) {
+        return ApiResponse.ok(service.findCirclesByOwnerId(id));
     }
 
     @GetMapping
     @Operation(summary = "分页搜索圈子")
-    public ApiResponse<?> search(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") long page, @RequestParam(defaultValue = "10") long size) {
-        return ApiResponse.ok(service.search(keyword, page, size));
+    public ApiResponse<?> searchCircles(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") long page, @RequestParam(defaultValue = "10") long size) {
+        return ApiResponse.ok(service.searchCircles(keyword, page, size));
     }
 
     @PostMapping("/search")
     @Operation(summary = "兼容旧版：分页搜索圈子")
-    public ApiResponse<?> searchPost(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") long page, @RequestParam(defaultValue = "10") long size) {
-        return search(keyword, page, size);
+    public ApiResponse<?> searchCirclesByPost(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") long page, @RequestParam(defaultValue = "10") long size) {
+        return searchCircles(keyword, page, size);
     }
 
     @PostMapping
     @Operation(summary = "创建圈子")
-    public ApiResponse<Circle> create(@Valid @RequestBody Circle v) {
-        return ApiResponse.ok(service.create(v));
+    public ApiResponse<Circle> createCircle(@Valid @RequestBody Circle circle) {
+        return ApiResponse.ok(service.createCircle(circle));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "修改圈子")
-    public ApiResponse<Circle> update(@PathVariable Integer id, @RequestBody Circle v) {
-        return ApiResponse.ok(service.update(id, v));
+    public ApiResponse<Circle> updateCircle(@PathVariable Integer id, @RequestBody Circle circle) {
+        return ApiResponse.ok(service.updateCircle(id, circle));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除圈子")
-    public ApiResponse<Void> delete(@PathVariable Integer id) {
-        service.delete(id);
+    public ApiResponse<Void> deleteCircle(@PathVariable Integer id) {
+        service.deleteCircle(id);
         return ApiResponse.ok("圈子删除成功");
     }
 }

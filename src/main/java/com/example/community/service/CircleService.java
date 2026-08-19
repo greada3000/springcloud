@@ -1,20 +1,20 @@
 package com.example.community.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.community.entity.Circle;
+import com.example.community.utils.PageResult;
 
 import java.util.List;
 
 public interface CircleService {
-    Circle get(Integer id);
+    Circle getCircleById(Integer circleId);
 
-    List<Circle> byOwner(Integer owner);
+    List<Circle> findCirclesByOwnerId(Integer ownerId);
 
-    IPage<Circle> search(String keyword, long page, long size);
+    PageResult<Circle> searchCircles(String keyword, long page, long size);
 
-    Circle create(Circle value);
+    Circle createCircle(Circle circle);
 
-    Circle update(Integer id, Circle input);
+    Circle updateCircle(Integer circleId, Circle input);
 
-    void delete(Integer id);
+    void deleteCircle(Integer circleId);
 }

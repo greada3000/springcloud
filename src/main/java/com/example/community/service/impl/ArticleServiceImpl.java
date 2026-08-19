@@ -1,12 +1,10 @@
 package com.example.community.service.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.community.entity.Article;
-import com.example.community.entity.Review;
 import com.example.community.mapper.ArticleMapper;
 import com.example.community.mapper.ReviewMapper;
 import com.example.community.service.ArticleService;
+import com.example.community.utils.PageResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,50 +18,53 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleMapper mapper;
     private final ReviewMapper reviewMapper;
 
-    public Article get(String id) {
-        Article v = mapper.selectById(id);
-        if (v == null) throw new IllegalArgumentException("文章不存在");
-        return v;
+    public Article getArticleById(String articleId) {
+        Article article = mapper.selectById(articleId);
+        if (article == null) throw new IllegalArgumentException("文章不存在");
+        return article;
     }
 
-    public IPage<Article> search(String keyword, long page, long size) {
-        var q = new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Article>();
-        if (keyword != null && !keyword.isBlank())
-            q.like(Article::getTitle, keyword).or().like(Article::getContent, keyword).or().like(Article::getUsername, keyword);
-        return mapper.selectPage(new Page<>(page, size), q.orderByDesc(Article::getArticleId));
+    public PageResult<Article> searchArticles(String keyword, long page, long size) {
+        long current = Math.max(1, page);
+        long pageSize = Math.max(1, size);
+        String searchKeyword = keyword == null || keyword.isBlank() ? null : keyword.trim();
+        return new PageResult<>(mapper.selectPageByKeyword(searchKeyword, (current - 1) * pageSize, pageSize),
+                mapper.countByKeyword(searchKeyword), current, pageSize);
     }
 
-    public List<Article> byUser(Integer id) {
-        return mapper.selectList(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Article>().eq(Article::getUserId, id));
+    public List<Article> findArticlesByUserId(Integer userId) {
+        return mapper.selectByUserId(userId);
     }
 
-    public List<Article> byCircle(Integer id) {
-        return mapper.selectList(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Article>().eq(Article::getCircleId, id));
-    }
-
-    @Transactional
-    public Article create(Article v) {
-        if (v.getArticleId() == null || v.getArticleId().isBlank()) v.setArticleId(UUID.randomUUID().toString());
-        mapper.insert(v);
-        return get(v.getArticleId());
+    public List<Article> findArticlesByCircleId(Integer circleId) {
+        return mapper.selectByCircleId(circleId);
     }
 
     @Transactional
-    public Article update(String id, Article input) {
-        Article v = get(id);
-        if (input.getTitle() != null) v.setTitle(input.getTitle());
-        if (input.getUserId() != null) v.setUserId(input.getUserId());
-        if (input.getUsername() != null) v.setUsername(input.getUsername());
-        if (input.getCircleId() != null) v.setCircleId(input.getCircleId());
-        if (input.getContent() != null) v.setContent(input.getContent());
-        mapper.updateById(v);
-        return get(id);
+    public Article createArticle(Article article) {
+        if (article.getArticleId() == null || article.getArticleId().isBlank()) {
+            article.setArticleId(UUID.randomUUID().toString());
+        }
+        mapper.insert(article);
+        return getArticleById(article.getArticleId());
     }
 
     @Transactional
-    public void delete(String id) {
-        get(id);
-        reviewMapper.delete(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Review>().eq(Review::getArticleId, id));
-        mapper.deleteById(id);
+    public Article updateArticle(String articleId, Article input) {
+        Article article = getArticleById(articleId);
+        if (input.getTitle() != null) article.setTitle(input.getTitle());
+        if (input.getUserId() != null) article.setUserId(input.getUserId());
+        if (input.getUsername() != null) article.setUsername(input.getUsername());
+        if (input.getCircleId() != null) article.setCircleId(input.getCircleId());
+        if (input.getContent() != null) article.setContent(input.getContent());
+        mapper.updateById(article);
+        return getArticleById(articleId);
+    }
+
+    @Transactional
+    public void deleteArticle(String articleId) {
+        getArticleById(articleId);
+        reviewMapper.deleteByArticleId(articleId);
+        mapper.deleteById(articleId);
     }
 }
