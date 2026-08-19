@@ -1,17 +1,18 @@
 package com.example.community.service;
 
-import com.example.community.entity.UserFollow;
+import com.example.community.dto.FollowRelationDTO;
+import com.example.community.vo.UserFollowVO;
 
 import java.util.List;
 
 public interface FollowService {
-    List<UserFollow> findFollowersByUserId(Integer userId);
+    List<UserFollowVO> findFollowersByUserId(Integer userId);
 
-    List<UserFollow> findFollowingByUserId(Integer userId);
+    List<UserFollowVO> findFollowingByUserId(Integer userId);
 
-    boolean isFollowing(Integer followerId, Integer followedUserId);
+    boolean isFollowing(FollowRelationDTO relation);
 
-    UserFollow followUser(UserFollow follow);
+    UserFollowVO followUser(FollowRelationDTO relation);
 
-    void unfollowUser(Integer followerId, Integer followedUserId);
+    void unfollowUser(FollowRelationDTO relation);
 }

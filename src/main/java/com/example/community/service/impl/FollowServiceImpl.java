@@ -1,8 +1,10 @@
 package com.example.community.service.impl;
 
+import com.example.community.dto.FollowRelationDTO;
 import com.example.community.entity.UserFollow;
 import com.example.community.mapper.UserFollowMapper;
 import com.example.community.service.FollowService;
+import com.example.community.vo.UserFollowVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,28 +16,33 @@ import java.util.List;
 public class FollowServiceImpl implements FollowService {
     private final UserFollowMapper mapper;
 
-    public List<UserFollow> findFollowersByUserId(Integer userId) {
-        return mapper.selectByFollowedUserId(userId);
+    public List<UserFollowVO> findFollowersByUserId(Integer userId) {
+        return mapper.selectByFollowedUserId(userId).stream().map(UserFollowVO::from).toList();
     }
 
-    public List<UserFollow> findFollowingByUserId(Integer userId) {
-        return mapper.selectByFollowerId(userId);
+    public List<UserFollowVO> findFollowingByUserId(Integer userId) {
+        return mapper.selectByFollowerId(userId).stream().map(UserFollowVO::from).toList();
     }
 
-    public boolean isFollowing(Integer followerId, Integer followedUserId) {
-        return mapper.countByUserIds(followerId, followedUserId) > 0;
+    public boolean isFollowing(FollowRelationDTO relation) {
+        return mapper.countByUserIds(relation.followerId(), relation.followedUserId()) > 0;
     }
 
     @Transactional
-    public UserFollow followUser(UserFollow follow) {
-        if (follow.getFollowerId().equals(follow.getFollowedUserId())) throw new IllegalArgumentException("不能关注自己");
-        if (isFollowing(follow.getFollowerId(), follow.getFollowedUserId())) throw new IllegalArgumentException("已经关注该用户");
+    public UserFollowVO followUser(FollowRelationDTO relation) {
+        if (relation.followerId().equals(relation.followedUserId())) throw new IllegalArgumentException("不能关注自己");
+        if (isFollowing(relation)) throw new IllegalArgumentException("已经关注该用户");
+        UserFollow follow = new UserFollow();
+        follow.setFollowerId(relation.followerId());
+        follow.setFollowedUserId(relation.followedUserId());
         mapper.insert(follow);
-        return follow;
+        return UserFollowVO.from(follow);
     }
 
     @Transactional
-    public void unfollowUser(Integer followerId, Integer followedUserId) {
-        if (mapper.deleteByUserIds(followerId, followedUserId) == 0) throw new IllegalArgumentException("关注关系不存在");
+    public void unfollowUser(FollowRelationDTO relation) {
+        if (mapper.deleteByUserIds(relation.followerId(), relation.followedUserId()) == 0) {
+            throw new IllegalArgumentException("关注关系不存在");
+        }
     }
 }

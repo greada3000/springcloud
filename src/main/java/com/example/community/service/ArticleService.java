@@ -1,22 +1,25 @@
 package com.example.community.service;
 
-import com.example.community.entity.Article;
-import com.example.community.utils.PageResult;
+import com.example.community.dto.ArticleCreateDTO;
+import com.example.community.dto.ArticleUpdateDTO;
+import com.example.community.dto.PageQueryDTO;
+import com.example.community.vo.ArticleVO;
+import com.example.community.vo.PageVO;
 
 import java.util.List;
 
 public interface ArticleService {
-    Article getArticleById(String articleId);
+    ArticleVO getArticleById(String articleId);
 
-    PageResult<Article> searchArticles(String keyword, long page, long size);
+    PageVO<ArticleVO> searchArticles(PageQueryDTO query);
 
-    List<Article> findArticlesByUserId(Integer userId);
+    List<ArticleVO> findArticlesByUserId(Integer userId);
 
-    List<Article> findArticlesByCircleId(Integer circleId);
+    List<ArticleVO> findArticlesByCircleId(Integer circleId);
 
-    Article createArticle(Article article);
+    ArticleVO createArticle(ArticleCreateDTO input);
 
-    Article updateArticle(String articleId, Article input);
+    ArticleVO updateArticle(String articleId, ArticleUpdateDTO input);
 
     void deleteArticle(String articleId);
 }

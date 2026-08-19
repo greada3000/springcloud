@@ -61,7 +61,9 @@ src/main/java/com/example/community
 ├─ service     业务服务接口（控制层只依赖接口）
 │  └─ impl     服务实现、业务逻辑和事务
 ├─ mapper      MyBatis 持久层接口
-├─ entity      数据库实体和请求模型
+├─ entity      数据库持久化实体，仅在 Service/Mapper 内部使用
+├─ dto         Controller 与 Service 的请求及查询参数
+├─ vo          面向前端的响应视图模型
 ├─ config      MyBatis、Swagger、密码配置
 └─ utils       统一响应和异常处理
 src/main/resources/mapper

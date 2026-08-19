@@ -1,9 +1,15 @@
 package com.example.community.service.impl;
 
+import com.example.community.dto.PasswordChangeDTO;
+import com.example.community.dto.PageQueryDTO;
+import com.example.community.dto.UserCreateDTO;
+import com.example.community.dto.UserLoginDTO;
+import com.example.community.dto.UserUpdateDTO;
 import com.example.community.entity.User;
 import com.example.community.mapper.UserMapper;
 import com.example.community.service.UserService;
-import com.example.community.utils.PageResult;
+import com.example.community.vo.PageVO;
+import com.example.community.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,49 +21,52 @@ public class UserServiceImpl implements UserService {
     private final UserMapper mapper;
     private final PasswordEncoder encoder;
 
-    public User getUserById(Integer userId) {
-        return requireUser(userId);
+    public UserVO getUserById(Integer userId) {
+        return UserVO.from(requireUser(userId));
     }
 
-    public PageResult<User> searchUsers(String keyword, long page, long size) {
-        long current = Math.max(1, page);
-        long pageSize = Math.max(1, size);
-        String searchKeyword = normalize(keyword);
+    public PageVO<UserVO> searchUsers(PageQueryDTO query) {
+        long current = query.getPage();
+        long pageSize = query.getSize();
+        String searchKeyword = normalize(query.getKeyword());
         Integer numericKeyword = isInteger(searchKeyword) ? Integer.valueOf(searchKeyword) : null;
-        return new PageResult<>(
-                mapper.selectPageByKeyword(searchKeyword, numericKeyword, (current - 1) * pageSize, pageSize),
+        var users = mapper.selectPageByKeyword(searchKeyword, numericKeyword, (current - 1) * pageSize, pageSize)
+                .stream().map(UserVO::from).toList();
+        return new PageVO<>(users,
                 mapper.countByKeyword(searchKeyword, numericKeyword), current, pageSize);
     }
 
-    public User authenticateUser(Integer userId, String password) {
-        User user = requireUser(userId);
-        if (!encoder.matches(password, user.getPassword())) throw new IllegalArgumentException("账号或密码错误");
-        return user;
+    public UserVO authenticateUser(UserLoginDTO login) {
+        return UserVO.from(authenticate(login.userId(), login.password()));
     }
 
     @Transactional
-    public User createUser(User user) {
-        if (mapper.selectById(user.getUserId()) != null) throw new IllegalArgumentException("用户编号已存在");
-        user.setPassword(encoder.encode(user.getPassword()));
-        if (user.getUsertype() == null) user.setUsertype(false);
+    public UserVO createUser(UserCreateDTO input) {
+        if (mapper.selectById(input.userId()) != null) throw new IllegalArgumentException("用户编号已存在");
+        User user = new User();
+        user.setUserId(input.userId());
+        user.setUsername(input.username());
+        user.setPassword(encoder.encode(input.password()));
+        user.setUsertype(input.userType() == null ? false : input.userType());
+        user.setUserpic(input.userPic());
         mapper.insert(user);
-        return requireUser(user.getUserId());
+        return UserVO.from(requireUser(user.getUserId()));
     }
 
     @Transactional
-    public User updateUser(Integer userId, User input) {
+    public UserVO updateUser(Integer userId, UserUpdateDTO input) {
         User user = requireUser(userId);
-        if (input.getUsername() != null) user.setUsername(input.getUsername());
-        if (input.getUsertype() != null) user.setUsertype(input.getUsertype());
-        if (input.getUserpic() != null) user.setUserpic(input.getUserpic());
+        if (input.username() != null) user.setUsername(input.username());
+        if (input.userType() != null) user.setUsertype(input.userType());
+        if (input.userPic() != null) user.setUserpic(input.userPic());
         mapper.updateById(user);
-        return requireUser(userId);
+        return UserVO.from(requireUser(userId));
     }
 
     @Transactional
-    public void changePassword(Integer userId, String oldPassword, String newPassword) {
-        User user = authenticateUser(userId, oldPassword);
-        user.setPassword(encoder.encode(newPassword));
+    public void changePassword(Integer userId, PasswordChangeDTO input) {
+        User user = authenticate(userId, input.oldPassword());
+        user.setPassword(encoder.encode(input.newPassword()));
         mapper.updateById(user);
     }
 
@@ -79,6 +88,12 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private User authenticate(Integer userId, String password) {
+        User user = requireUser(userId);
+        if (!encoder.matches(password, user.getPassword())) throw new IllegalArgumentException("账号或密码错误");
+        return user;
     }
 
     private static String normalize(String keyword) {

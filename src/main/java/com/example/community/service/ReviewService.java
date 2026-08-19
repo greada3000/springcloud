@@ -1,17 +1,19 @@
 package com.example.community.service;
 
-import com.example.community.entity.Review;
+import com.example.community.dto.ReviewCreateDTO;
+import com.example.community.dto.ReviewUpdateDTO;
+import com.example.community.vo.ReviewVO;
 
 import java.util.List;
 
 public interface ReviewService {
-    Review getReviewById(Integer reviewId);
+    ReviewVO getReviewById(Integer reviewId);
 
-    List<Review> findReviewsByArticleId(String articleId);
+    List<ReviewVO> findReviewsByArticleId(String articleId);
 
-    Review createReview(Review review);
+    ReviewVO createReview(ReviewCreateDTO input);
 
-    Review updateReview(Integer reviewId, Review input);
+    ReviewVO updateReview(Integer reviewId, ReviewUpdateDTO input);
 
     void deleteReview(Integer reviewId);
 

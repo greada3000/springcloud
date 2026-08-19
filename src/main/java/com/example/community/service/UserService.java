@@ -1,20 +1,25 @@
 package com.example.community.service;
 
-import com.example.community.entity.User;
-import com.example.community.utils.PageResult;
+import com.example.community.dto.PasswordChangeDTO;
+import com.example.community.dto.PageQueryDTO;
+import com.example.community.dto.UserCreateDTO;
+import com.example.community.dto.UserLoginDTO;
+import com.example.community.dto.UserUpdateDTO;
+import com.example.community.vo.PageVO;
+import com.example.community.vo.UserVO;
 
 public interface UserService {
-    User getUserById(Integer userId);
+    UserVO getUserById(Integer userId);
 
-    PageResult<User> searchUsers(String keyword, long page, long size);
+    PageVO<UserVO> searchUsers(PageQueryDTO query);
 
-    User authenticateUser(Integer userId, String password);
+    UserVO authenticateUser(UserLoginDTO login);
 
-    User createUser(User user);
+    UserVO createUser(UserCreateDTO input);
 
-    User updateUser(Integer userId, User input);
+    UserVO updateUser(Integer userId, UserUpdateDTO input);
 
-    void changePassword(Integer userId, String oldPassword, String newPassword);
+    void changePassword(Integer userId, PasswordChangeDTO input);
 
     void deleteUser(Integer userId);
 }

@@ -1,20 +1,23 @@
 package com.example.community.service;
 
-import com.example.community.entity.Circle;
-import com.example.community.utils.PageResult;
+import com.example.community.dto.CircleCreateDTO;
+import com.example.community.dto.CircleUpdateDTO;
+import com.example.community.dto.PageQueryDTO;
+import com.example.community.vo.CircleVO;
+import com.example.community.vo.PageVO;
 
 import java.util.List;
 
 public interface CircleService {
-    Circle getCircleById(Integer circleId);
+    CircleVO getCircleById(Integer circleId);
 
-    List<Circle> findCirclesByOwnerId(Integer ownerId);
+    List<CircleVO> findCirclesByOwnerId(Integer ownerId);
 
-    PageResult<Circle> searchCircles(String keyword, long page, long size);
+    PageVO<CircleVO> searchCircles(PageQueryDTO query);
 
-    Circle createCircle(Circle circle);
+    CircleVO createCircle(CircleCreateDTO input);
 
-    Circle updateCircle(Integer circleId, Circle input);
+    CircleVO updateCircle(Integer circleId, CircleUpdateDTO input);
 
     void deleteCircle(Integer circleId);
 }
