@@ -1,6 +1,6 @@
 # 社区系统接口功能记录
 
-> 2026-08-21 安全优化后，所有写接口需要 HTTP Basic 认证，统一响应新增 `code` 和 `traceId`，所有集合接口均支持 `page/size`（`size` 最大 100）。最新变更与迁移说明见 [SYSTEM_OPTIMIZATION.md](SYSTEM_OPTIMIZATION.md)。
+> 2026-08-21 安全优化后，所有写接口需要 HTTP Basic 认证，统一响应新增 `code` 和 `traceId`，所有集合接口均支持 `page/size`（`size` 最大 100）。最新变更与迁移说明见 [SYSTEM_OPTIMIZATION.md](SYSTEM_OPTIMIZATION.md/SYSTEM_OPTIMIZATION.md)。
 
 ## 访问方式
 
@@ -53,7 +53,7 @@
 
 ## 数据库与测试数据
 
-执行 `database/init.sql` 可创建 `finally` 数据库、5 张表和测试数据。测试账号为 `10001`、`10002`、`10003`，密码均为 `123456`。默认连接为 MySQL `root/123456`，可用 `DB_URL`、`DB_USERNAME`、`DB_PASSWORD` 覆盖。数据库修改汇总、跨电脑初始化、Docker、备份与恢复示例见 [DATABASE_SETUP.md](DATABASE_SETUP.md)。
+执行 `database/init.sql` 可创建 `finally` 数据库、5 张表和测试数据。测试账号为 `10001`、`10002`、`10003`，密码均为 `123456`。默认连接为 MySQL `root/123456`，可用 `DB_URL`、`DB_USERNAME`、`DB_PASSWORD` 覆盖。数据库修改汇总、跨电脑初始化、Docker、备份与恢复示例见 [DATABASE_SETUP.md](DATABASE_SETUP.md/DATABASE_SETUP.md)。
 
 ## 标准分层
 

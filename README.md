@@ -42,4 +42,4 @@ Invoke-RestMethod -Method Post -Uri 'http://localhost:8080/api/articles' `
 
 生产环境必须通过 HTTPS 暴露服务，不能在明文 HTTP 上传输 Basic 凭据。
 
-完整的数据库结构、历史修改、Windows/Linux/macOS/Docker/IDEA 初始化示例，以及备份迁移方法见 [DATABASE_SETUP.md](DATABASE_SETUP.md)。
+完整的数据库结构、历史修改、Windows/Linux/macOS/Docker/IDEA 初始化示例，以及备份迁移方法见 [DATABASE_SETUP.md](docs/DATABASE_SETUP.md)。
