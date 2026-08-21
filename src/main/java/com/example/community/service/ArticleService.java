@@ -3,16 +3,14 @@ package com.example.community.service;
 import com.example.community.entity.Article;
 import com.example.community.utils.PageResult;
 
-import java.util.List;
-
 public interface ArticleService {
     Article getArticleById(String articleId);
 
     PageResult<Article> searchArticles(String keyword, long page, long size);
 
-    List<Article> findArticlesByUserId(Integer userId);
+    PageResult<Article> findArticlesByUserId(Integer userId, long page, long size);
 
-    List<Article> findArticlesByCircleId(Integer circleId);
+    PageResult<Article> findArticlesByCircleId(Integer circleId, long page, long size);
 
     Article createArticle(Article article);
 

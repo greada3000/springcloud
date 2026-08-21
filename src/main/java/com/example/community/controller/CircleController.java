@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,8 +25,10 @@ public class CircleController {
 
     @GetMapping("/owner/{id}")
     @Operation(summary = "查询用户创建的圈子")
-    public ApiResponse<?> getCirclesByOwnerId(@PathVariable Integer id) {
-        return ApiResponse.ok(service.findCirclesByOwnerId(id));
+    public ApiResponse<?> getCirclesByOwnerId(@PathVariable Integer id,
+                                               @RequestParam(defaultValue = "1") long page,
+                                               @RequestParam(defaultValue = "10") long size) {
+        return ApiResponse.ok(service.findCirclesByOwnerId(id, page, size));
     }
 
     @GetMapping
@@ -41,6 +44,7 @@ public class CircleController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "创建圈子")
     public ApiResponse<Circle> createCircle(@Valid @RequestBody Circle circle) {
         return ApiResponse.ok(service.createCircle(circle));

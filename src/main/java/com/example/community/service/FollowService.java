@@ -1,13 +1,12 @@
 package com.example.community.service;
 
 import com.example.community.entity.UserFollow;
-
-import java.util.List;
+import com.example.community.utils.PageResult;
 
 public interface FollowService {
-    List<UserFollow> findFollowersByUserId(Integer userId);
+    PageResult<UserFollow> findFollowersByUserId(Integer userId, long page, long size);
 
-    List<UserFollow> findFollowingByUserId(Integer userId);
+    PageResult<UserFollow> findFollowingByUserId(Integer userId, long page, long size);
 
     boolean isFollowing(Integer followerId, Integer followedUserId);
 

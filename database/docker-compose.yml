@@ -4,8 +4,10 @@ services:
     container_name: community-mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-local-root-password}"
       MYSQL_DATABASE: finally
+      MYSQL_USER: community_app
+      MYSQL_PASSWORD: "${MYSQL_APP_PASSWORD:-local-community-password}"
       TZ: Asia/Shanghai
     ports:
       - "3306:3306"
@@ -15,8 +17,9 @@ services:
     volumes:
       - community_mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./seed-dev.sql:/docker-entrypoint-initdb.d/02-seed-dev.sql:ro
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p123456"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -ucommunity_app -p$${MYSQL_PASSWORD}"]
       interval: 5s
       timeout: 5s
       retries: 20

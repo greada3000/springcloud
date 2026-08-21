@@ -3,12 +3,10 @@ package com.example.community.service;
 import com.example.community.entity.Circle;
 import com.example.community.utils.PageResult;
 
-import java.util.List;
-
 public interface CircleService {
     Circle getCircleById(Integer circleId);
 
-    List<Circle> findCirclesByOwnerId(Integer ownerId);
+    PageResult<Circle> findCirclesByOwnerId(Integer ownerId, long page, long size);
 
     PageResult<Circle> searchCircles(String keyword, long page, long size);
 

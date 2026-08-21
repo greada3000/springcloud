@@ -1,5 +1,7 @@
 # 社区系统接口功能记录
 
+> 2026-08-21 安全优化后，所有写接口需要 HTTP Basic 认证，统一响应新增 `code` 和 `traceId`，所有集合接口均支持 `page/size`（`size` 最大 100）。最新变更与迁移说明见 [SYSTEM_OPTIMIZATION.md](SYSTEM_OPTIMIZATION.md)。
+
 ## 访问方式
 
 - 服务地址：`http://localhost:8080`

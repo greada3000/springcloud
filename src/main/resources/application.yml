@@ -1,20 +1,52 @@
 server:
   port: ${SERVER_PORT:8080}
+  shutdown: graceful
+  error:
+    include-message: never
 spring:
   application:
     name: community-api
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DB_URL:jdbc:mysql://localhost:3306/finally?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:123456}
+    username: ${DB_USERNAME:community_app}
+    password: ${DB_PASSWORD:}
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX_SIZE:10}
+      minimum-idle: ${DB_POOL_MIN_IDLE:2}
+      connection-timeout: 30000
+  flyway:
+    enabled: ${FLYWAY_ENABLED:true}
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations: classpath:db/migration
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
 mybatis:
   mapper-locations: classpath*:/mapper/**/*.xml
   type-aliases-package: com.example.community.entity
   configuration:
     map-underscore-to-camel-case: true
 springdoc:
+  api-docs.enabled: ${SWAGGER_ENABLED:true}
+  swagger-ui.enabled: ${SWAGGER_ENABLED:true}
   swagger-ui.path: /swagger-ui.html
   api-docs.path: /api-docs
 app:
   cors.allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:8081}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+  health:
+    readiness-state.enabled: true
+    liveness-state.enabled: true
+logging:
+  pattern:
+    level: "%5p [traceId:%X{traceId:-}]"

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,11 +25,14 @@ public class ReviewController {
 
     @GetMapping("/article/{id}")
     @Operation(summary = "查询文章评论")
-    public ApiResponse<?> getReviewsByArticleId(@PathVariable String id) {
-        return ApiResponse.ok(service.findReviewsByArticleId(id));
+    public ApiResponse<?> getReviewsByArticleId(@PathVariable String id,
+                                                 @RequestParam(defaultValue = "1") long page,
+                                                 @RequestParam(defaultValue = "10") long size) {
+        return ApiResponse.ok(service.findReviewsByArticleId(id, page, size));
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "发表评论")
     public ApiResponse<Review> createReview(@Valid @RequestBody Review review) {
         return ApiResponse.ok(service.createReview(review));

@@ -4,6 +4,9 @@ import com.example.community.entity.User;
 import com.example.community.mapper.UserMapper;
 import com.example.community.service.UserService;
 import com.example.community.utils.PageResult;
+import com.example.community.utils.ApiException;
+import com.example.community.utils.Paging;
+import com.example.community.security.CurrentUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,14 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
     private final UserMapper mapper;
     private final PasswordEncoder encoder;
+    private final CurrentUser currentUser;
 
     public User getUserById(Integer userId) {
         return requireUser(userId);
     }
 
     public PageResult<User> searchUsers(String keyword, long page, long size) {
-        long current = Math.max(1, page);
-        long pageSize = Math.max(1, size);
+        long current = Paging.page(page);
+        long pageSize = Paging.size(size);
         String searchKeyword = normalize(keyword);
         Integer numericKeyword = isInteger(searchKeyword) ? Integer.valueOf(searchKeyword) : null;
         return new PageResult<>(
@@ -30,25 +34,28 @@ public class UserServiceImpl implements UserService {
     }
 
     public User authenticateUser(Integer userId, String password) {
-        User user = requireUser(userId);
-        if (!encoder.matches(password, user.getPassword())) throw new IllegalArgumentException("账号或密码错误");
+        User user = mapper.selectById(userId);
+        if (user == null || !encoder.matches(password, user.getPassword())) {
+            throw ApiException.unauthorized("INVALID_CREDENTIALS", "账号或密码错误");
+        }
         return user;
     }
 
     @Transactional
     public User createUser(User user) {
-        if (mapper.selectById(user.getUserId()) != null) throw new IllegalArgumentException("用户编号已存在");
+        if (mapper.selectById(user.getUserId()) != null) throw ApiException.conflict("USER_EXISTS", "用户编号已存在");
         user.setPassword(encoder.encode(user.getPassword()));
-        if (user.getUsertype() == null) user.setUsertype(false);
+        user.setUsertype(false);
         mapper.insert(user);
         return requireUser(user.getUserId());
     }
 
     @Transactional
     public User updateUser(Integer userId, User input) {
+        currentUser.requireSelfOrAdmin(userId);
         User user = requireUser(userId);
         if (input.getUsername() != null) user.setUsername(input.getUsername());
-        if (input.getUsertype() != null) user.setUsertype(input.getUsertype());
+        if (input.getUsertype() != null && currentUser.isAdmin()) user.setUsertype(input.getUsertype());
         if (input.getUserpic() != null) user.setUserpic(input.getUserpic());
         mapper.updateById(user);
         return requireUser(userId);
@@ -56,6 +63,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void changePassword(Integer userId, String oldPassword, String newPassword) {
+        currentUser.requireSelfOrAdmin(userId);
         User user = authenticateUser(userId, oldPassword);
         user.setPassword(encoder.encode(newPassword));
         mapper.updateById(user);
@@ -63,12 +71,13 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void deleteUser(Integer userId) {
+        currentUser.requireSelfOrAdmin(userId);
         if (mapper.deleteById(userId) == 0) throw new IllegalArgumentException("用户不存在");
     }
 
     private User requireUser(Integer userId) {
         User user = mapper.selectById(userId);
-        if (user == null) throw new IllegalArgumentException("用户不存在");
+        if (user == null) throw ApiException.notFound("USER_NOT_FOUND", "用户不存在");
         return user;
     }
 

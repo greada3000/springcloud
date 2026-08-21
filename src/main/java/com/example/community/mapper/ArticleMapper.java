@@ -13,9 +13,11 @@ public interface ArticleMapper {
 
     long countByKeyword(@Param("keyword") String keyword);
 
-    List<Article> selectByUserId(@Param("userId") Integer userId);
+    List<Article> selectByUserId(@Param("userId") Integer userId, @Param("offset") long offset, @Param("size") long size);
+    long countByUserId(@Param("userId") Integer userId);
 
-    List<Article> selectByCircleId(@Param("circleId") Integer circleId);
+    List<Article> selectByCircleId(@Param("circleId") Integer circleId, @Param("offset") long offset, @Param("size") long size);
+    long countByCircleId(@Param("circleId") Integer circleId);
 
     int insert(Article article);
 

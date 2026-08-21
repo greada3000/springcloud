@@ -1,5 +1,7 @@
 # MySQL 数据库修改汇总与本地运行指南
 
+> 2026-08-21 起，应用使用 Flyway 管理表结构，基础配置不再提供数据库密码默认值，测试数据已拆分到 `database/seed-dev.sql`。本文件中的 root/123456 示例仅为旧版记录；请优先遵循 [SYSTEM_OPTIMIZATION.md](SYSTEM_OPTIMIZATION.md) 和 README 的最小权限账号配置。
+
 本文档记录项目数据库的最终结构、历史修改和在其他计算机上的初始化方法。项目不使用 Elasticsearch，文章、用户、圈子、评论和关注数据全部保存在 MySQL 中。
 
 ## 1. 最终数据库配置

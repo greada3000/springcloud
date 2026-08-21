@@ -1,0 +1,29 @@
+name: backend-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - name: Start test database
+        run: docker compose -f database/docker-compose.yml up -d --wait
+      - name: Clean test
+        env:
+          DB_USERNAME: community_app
+          DB_PASSWORD: local-community-password
+          FLYWAY_ENABLED: "false"
+        run: mvn -B clean test
+      - name: Build container
+        run: docker build -t community-api:test .
+      - name: Stop test database
+        if: always()
+        run: docker compose -f database/docker-compose.yml down -v

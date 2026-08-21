@@ -1,13 +1,12 @@
 package com.example.community.service;
 
 import com.example.community.entity.Review;
-
-import java.util.List;
+import com.example.community.utils.PageResult;
 
 public interface ReviewService {
     Review getReviewById(Integer reviewId);
 
-    List<Review> findReviewsByArticleId(String articleId);
+    PageResult<Review> findReviewsByArticleId(String articleId, long page, long size);
 
     Review createReview(Review review);
 

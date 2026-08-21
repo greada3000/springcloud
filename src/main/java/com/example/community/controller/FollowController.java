@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,14 +19,18 @@ public class FollowController {
 
     @GetMapping("/{userId}/followers")
     @Operation(summary = "查询粉丝")
-    public ApiResponse<?> getFollowersByUserId(@PathVariable Integer userId) {
-        return ApiResponse.ok(service.findFollowersByUserId(userId));
+    public ApiResponse<?> getFollowersByUserId(@PathVariable Integer userId,
+                                                @RequestParam(defaultValue = "1") long page,
+                                                @RequestParam(defaultValue = "10") long size) {
+        return ApiResponse.ok(service.findFollowersByUserId(userId, page, size));
     }
 
     @GetMapping("/{userId}/following")
     @Operation(summary = "查询关注列表")
-    public ApiResponse<?> getFollowingByUserId(@PathVariable Integer userId) {
-        return ApiResponse.ok(service.findFollowingByUserId(userId));
+    public ApiResponse<?> getFollowingByUserId(@PathVariable Integer userId,
+                                                @RequestParam(defaultValue = "1") long page,
+                                                @RequestParam(defaultValue = "10") long size) {
+        return ApiResponse.ok(service.findFollowingByUserId(userId, page, size));
     }
 
     @GetMapping("/status")
@@ -43,6 +48,7 @@ public class FollowController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "关注用户")
     public ApiResponse<UserFollow> followUser(@Valid @RequestBody UserFollow follow) {
         return ApiResponse.ok(service.followUser(follow));

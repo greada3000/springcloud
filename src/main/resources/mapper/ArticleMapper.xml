@@ -8,9 +8,11 @@
         <result column="username" property="username"/>
         <result column="circle_id" property="circleId"/>
         <result column="content" property="content"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
     </resultMap>
 
-    <sql id="columns">article_id, title, user_id, username, circle_id, content</sql>
+    <sql id="columns">article_id, title, user_id, username, circle_id, content, created_at, updated_at</sql>
 
     <sql id="searchWhere">
         <if test="keyword != null">
@@ -27,7 +29,7 @@
     <select id="selectPageByKeyword" resultMap="ArticleMap">
         SELECT <include refid="columns"/> FROM tb_article
         <include refid="searchWhere"/>
-        ORDER BY article_id DESC
+        ORDER BY created_at DESC, article_id DESC
         LIMIT #{offset}, #{size}
     </select>
 
@@ -38,11 +40,17 @@
 
     <select id="selectByUserId" resultMap="ArticleMap">
         SELECT <include refid="columns"/> FROM tb_article WHERE user_id = #{userId}
+        ORDER BY created_at DESC, article_id DESC
+        LIMIT #{offset}, #{size}
     </select>
+    <select id="countByUserId" resultType="long">SELECT COUNT(*) FROM tb_article WHERE user_id = #{userId}</select>
 
     <select id="selectByCircleId" resultMap="ArticleMap">
         SELECT <include refid="columns"/> FROM tb_article WHERE circle_id = #{circleId}
+        ORDER BY created_at DESC, article_id DESC
+        LIMIT #{offset}, #{size}
     </select>
+    <select id="countByCircleId" resultType="long">SELECT COUNT(*) FROM tb_article WHERE circle_id = #{circleId}</select>
 
     <insert id="insert">
         INSERT INTO tb_article (article_id, title, user_id, username, circle_id, content)

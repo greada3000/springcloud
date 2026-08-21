@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,17 +32,22 @@ public class ArticleController {
 
     @GetMapping("/user/{id}")
     @Operation(summary = "查询用户文章")
-    public ApiResponse<?> getArticlesByUserId(@PathVariable Integer id) {
-        return ApiResponse.ok(service.findArticlesByUserId(id));
+    public ApiResponse<?> getArticlesByUserId(@PathVariable Integer id,
+                                               @RequestParam(defaultValue = "1") long page,
+                                               @RequestParam(defaultValue = "10") long size) {
+        return ApiResponse.ok(service.findArticlesByUserId(id, page, size));
     }
 
     @GetMapping("/circle/{id}")
     @Operation(summary = "查询圈子文章")
-    public ApiResponse<?> getArticlesByCircleId(@PathVariable Integer id) {
-        return ApiResponse.ok(service.findArticlesByCircleId(id));
+    public ApiResponse<?> getArticlesByCircleId(@PathVariable Integer id,
+                                                 @RequestParam(defaultValue = "1") long page,
+                                                 @RequestParam(defaultValue = "10") long size) {
+        return ApiResponse.ok(service.findArticlesByCircleId(id, page, size));
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "发布文章")
     public ApiResponse<Article> createArticle(@Valid @RequestBody Article article) {
         return ApiResponse.ok(service.createArticle(article));

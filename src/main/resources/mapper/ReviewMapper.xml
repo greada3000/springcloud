@@ -18,7 +18,9 @@
         SELECT <include refid="columns"/> FROM tb_review
         WHERE article_id = #{articleId}
         ORDER BY review_id ASC
+        LIMIT #{offset}, #{size}
     </select>
+    <select id="countByArticleId" resultType="long">SELECT COUNT(*) FROM tb_review WHERE article_id = #{articleId}</select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="reviewId">
         INSERT INTO tb_review (owner_id, article_id, content)

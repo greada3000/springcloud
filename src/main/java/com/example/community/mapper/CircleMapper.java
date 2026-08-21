@@ -8,7 +8,8 @@ import java.util.List;
 public interface CircleMapper {
     Circle selectById(@Param("id") Integer id);
 
-    List<Circle> selectByOwnerId(@Param("ownerId") Integer ownerId);
+    List<Circle> selectByOwnerId(@Param("ownerId") Integer ownerId, @Param("offset") long offset, @Param("size") long size);
+    long countByOwnerId(@Param("ownerId") Integer ownerId);
 
     List<Circle> selectPageByKeyword(@Param("keyword") String keyword, @Param("offset") long offset,
                                      @Param("size") long size);

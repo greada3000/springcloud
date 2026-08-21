@@ -8,7 +8,8 @@ import java.util.List;
 public interface ReviewMapper {
     Review selectById(@Param("id") Integer id);
 
-    List<Review> selectByArticleId(@Param("articleId") String articleId);
+    List<Review> selectByArticleId(@Param("articleId") String articleId, @Param("offset") long offset, @Param("size") long size);
+    long countByArticleId(@Param("articleId") String articleId);
 
     int insert(Review review);
 
